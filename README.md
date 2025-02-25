@@ -1,7 +1,3 @@
-Ah, je vois ! Tu veux un `README.md` qui décrit l'ensemble du projet, y compris la structure des sous-domaines pour chaque ville et l'utilisation de `static.erangel.fr` pour les fichiers statiques. Voici une version mise à jour du `README.md` qui couvre tout cela :
-
----
-
 # Projet Erangel - Index des Villes
 
 Ce projet est une plateforme web qui permet d'explorer les différentes villes et lieux d'intérêt de la carte **Erangel** du jeu **PUBG**. Chaque ville ou lieu dispose de son propre sous-domaine (par exemple, `pochinki.erangel.fr`, `georgopol.erangel.fr`), et tous les fichiers statiques (CSS, images, etc.) sont hébergés sur `static.erangel.fr`.
