@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erangel - Index des villes</title>
+    <link href="https://static.erangel.fr/monsterrat.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: #1c1c1e;
+            color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .table {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px; /* Espacement entre les vignettes */
+            max-width: 900px;
+            width: 100%; /* Pour s'adapter à la largeur disponible */
+        }
+        .category {
+            margin-top: 30px;
+            margin-bottom: 40px; /* Espacement augmenté sous le nom de la section */
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .city-box {
+            position: relative;
+            width: 100%; /* Largeur basée sur la grille */
+            padding-top: 100%; /* Ratio 1:1 pour un carré */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+        .city-box:hover {
+            transform: scale(1.05);
+        }
+        .city-box img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            filter: brightness(0.7);
+        }
+        .city-box span {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #fff;
+            white-space: nowrap; /* Empêche le texte de passer à la ligne */
+        }
+        /* Centrer la case "Sous-sol Secret" */
+        .table-single {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            max-width: 300px; /* Ajuste la largeur si nécessaire */
+            margin: 0 auto;
+        }
+        /* Copyright */
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carte d'Erangel - Sélectionnez une ville</h1>
+    
+    <div class="category">Villes principales</div>
+    <div class="table">
+        <div class="city-box" onclick="window.open('https://pochinki.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Pochinki">
+            <span>Pochinki</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://severny.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Severny">
+            <span>Severny</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://georgopol.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Georgopol">
+            <span>Georgopol</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://yasnaya.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Yasnaya Polyana">
+            <span>Yasnaya Polyana</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://novorepnoye.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Novorepnoye">
+            <span>Novorepnoye</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://military.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Base Militaire">
+            <span>Base Militaire</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://lipovka.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Lipovka">
+            <span>Lipovka</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://mylta.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Mylta">
+            <span>Mylta</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://zharki.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Zharki">
+            <span>Zharki</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://stalber.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Stalber">
+            <span>Stalber</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://primosk.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Primorsk">
+            <span>Primorsk</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://rozhok.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Rozhok">
+            <span>Rozhok</span>
+        </div>
+        <div class="city-box" onclick="window.open('https://school.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="School">
+            <span>School</span>
+        </div>
+    </div>
+    
+    <!-- Section Lieux secrets -->
+    <div class="category">Lieux secrets</div>
+    <div class="table">
+        <div class="city-box" onclick="window.open('https://secret.erangel.fr', '_blank');">
+            <img src="https://static.erangel.fr/placeholder.jpeg" alt="Sous-sol Secret">
+            <span>Sous-sol Secret</span>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <footer>
+        &copy; 2023 Erangel.fr - Tous droits réservés. Inspiré par PUBG.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Interactive d'Erangel</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: #1c1c1e;
+            color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 100vh; /* Utiliser toute la hauteur de la page */
+            padding: 20px; /* Espacement autour de la carte */
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        #map {
+            height: 900px; /* Hauteur augmentée */
+            width: 95%;    /* Largeur augmentée */
+            max-width: 1400px; /* Largeur maximale */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .leaflet-popup-content {
+            color: #1c1c1e;
+            font-family: 'Montserrat', sans-serif;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        .filters {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .filters .filter-button {
+            display: flex;
+            align-items: center;
+            background: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .filters .filter-button.active {
+            background: #0078a0;
+        }
+        .filters .filter-button:hover {
+            background: #555;
+            transform: scale(1.05);
+        }
+        .filters .filter-button img {
+            width: 30px; /* Taille augmentée */
+            height: 30px; /* Taille augmentée */
+            margin-right: 8px;
+            filter: invert(1); /* Inverser la couleur des icônes */
+        }
+    </style>
+</head>
+<body>
+    <h1>Carte Interactive d'Erangel</h1>
+    <div class="filters">
+        <div class="filter-button" data-type="city">
+            <img src="https://static.erangel.fr/icon/noun-city-7254476.png" alt="Ville"> Villes
+        </div>
+        <div class="filter-button" data-type="military">
+            <img src="https://static.erangel.fr/icon/noun-army-camp-7213223.png" alt="Base militaire"> Bases militaires
+        </div>
+        <div class="filter-button" data-type="secret">
+            <img src="https://static.erangel.fr/icon/noun-treasure-map-338149.png" alt="Lieu secret"> Lieux secrets
+        </div>
+    </div>
+    <div id="map"></div>
+    <footer>
+        &copy; 2023 Erangel.fr - Tous droits réservés. Inspiré par PUBG.
+    </footer>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialisation de la carte
+        const map = L.map('map', {
+            crs: L.CRS.Simple, // Utiliser un système de coordonnées simple
+            minZoom: -1,       // Permettre un zoom arrière
+            maxZoom: 5,        // Augmenter le zoom avant
+            maxBounds: [       // Bloquer le déplacement en dehors de la carte
+                [0, 0],       // Coin supérieur gauche
+                [5000, 5000]  // Coin inférieur droit
+            ],
+            maxBoundsViscosity: 1.0 // Empêcher complètement de sortir de la carte
+        }).setView([2500, 2500], 0); // Centrer sur le milieu de l'image
+
+        // Définir les limites de l'image
+        const imageBounds = [
+            [0, 0],       // Coin supérieur gauche
+            [5000, 5000]  // Coin inférieur droit
+        ];
+
+        // Ajouter l'image comme fond de carte
+        L.imageOverlay('https://static.erangel.fr/carte.jpeg', imageBounds).addTo(map);
+
+        // Icônes personnalisées (inversées en couleur)
+        const iconCity = L.icon({
+            iconUrl: 'https://static.erangel.fr/icon/noun-city-7254476.png', // Icône des villes
+            iconSize: [40, 40], // Taille augmentée
+            className: 'inverted-icon', // Classe pour inverser la couleur
+        });
+
+        const iconMilitary = L.icon({
+            iconUrl: 'https://static.erangel.fr/icon/noun-army-camp-7213223.png', // Icône des bases militaires
+            iconSize: [40, 40], // Taille augmentée
+            className: 'inverted-icon', // Classe pour inverser la couleur
+        });
+
+        const iconSecret = L.icon({
+            iconUrl: 'https://static.erangel.fr/icon/noun-treasure-map-338149.png', // Icône des lieux secrets
+            iconSize: [40, 40], // Taille augmentée
+            className: 'inverted-icon', // Classe pour inverser la couleur
+        });
+
+        // Style pour inverser la couleur des icônes sur la carte
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .inverted-icon img {
+                filter: invert(1); /* Inverser la couleur des icônes */
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Données des villes (coordonnées en pixels)
+        const cities = [
+            {
+                name: "Pochinki",
+                coords: [2500, 1500],
+                type: "city",
+                loot: "Haut niveau (niveau 3, armes rares)",
+                danger: "Très élevé",
+                anecdote: "Pochinki est surnommée la 'ville de la mort' à cause des combats intenses."
+            },
+            {
+                name: "Georgopol",
+                coords: [1000, 3000],
+                type: "city",
+                loot: "Moyen à haut niveau",
+                danger: "Modéré",
+                anecdote: "Georgopol est divisée en deux parties : la zone nord et la zone sud."
+            },
+            {
+                name: "Base Militaire",
+                coords: [4000, 4500],
+                type: "military",
+                loot: "Très haut niveau",
+                danger: "Très élevé",
+                anecdote: "La Base Militaire est souvent hors du cercle, mais le loot en vaut la peine."
+            },
+            {
+                name: "Yasnaya Polyana",
+                coords: [3000, 1000],
+                type: "city",
+                loot: "Haut niveau",
+                danger: "Élevé",
+                anecdote: "Yasnaya est l'une des plus grandes villes d'Erangel."
+            },
+            {
+                name: "Sous-sol Secret",
+                coords: [2500, 2500],
+                type: "secret",
+                loot: "Très haut niveau",
+                danger: "Modéré",
+                anecdote: "Le bunker secret nécessite une clé pour être ouvert."
+            },
+            // Ajoute d'autres villes ici...
+        ];
+
+        // Ajouter des marqueurs pour chaque ville
+        const markers = [];
+        cities.forEach(city => {
+            let icon;
+            switch (city.type) {
+                case "city":
+                    icon = iconCity;
+                    break;
+                case "military":
+                    icon = iconMilitary;
+                    break;
+                case "secret":
+                    icon = iconSecret;
+                    break;
+            }
+
+            const marker = L.marker(city.coords, { icon }).addTo(map);
+            marker.bindPopup(`
+                <strong>${city.name}</strong><br>
+                <strong>Loot :</strong> ${city.loot}<br>
+                <strong>Danger :</strong> ${city.danger}<br>
+                <strong>Anecdote :</strong> ${city.anecdote}
+            `);
+            markers.push({ marker, type: city.type });
+        });
+
+        // Gestion des filtres
+        const filterButtons = document.querySelectorAll('.filters .filter-button');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active'); // Activer/désactiver le bouton
+
+                const selectedTypes = Array.from(filterButtons)
+                    .filter(button => button.classList.contains('active'))
+                    .map(button => button.dataset.type);
+
+                if (selectedTypes.length === 0) {
+                    // Si aucun bouton n'est actif, afficher tout
+                    markers.forEach(({ marker }) => marker.addTo(map));
+                } else {
+                    // Filtrer les marqueurs en fonction des types sélectionnés
+                    markers.forEach(({ marker, type }) => {
+                        if (selectedTypes.includes(type)) {
+                            marker.addTo(map);
+                        } else {
+                            marker.remove();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
