@@ -1,2 +1,3 @@
 # erangel.fr
-Waiting 1
+Waiting
+Test Cred
